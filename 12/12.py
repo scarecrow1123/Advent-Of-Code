@@ -1,28 +1,32 @@
-ip = open("12.txt").read()
-import re
-arr = re.findall(r'[-\d]+', ip)
-s = 0
-for i in arr:
-	s += int(i)
-
-def foo(f, tp, count):
-	if tp is "dict":
-		if f.has_key("red") or "red" in f.values():
-			return
-		for k, v in d.iteritems():
-			if k == 'red':
-				continue
-			if type(v) is dict:
-				count += foo(v, "dict", count)
-			elif type(v) is list:
-				count+= foo(v, "list", count)
-			elif v == 'red':
-				continue
-			else:
-				count += v
-	elif tp is "list":
-		for x in f:
-			if type(x) is int:
-				count += x
-	return count
-print foo(ip, "dict", -1)
+count = 0
+def foo(f, tp):
+  global count
+  if tp is "dict":
+    if f.has_key("red") or "red" in f.values():
+      return 0
+    for k, v in f.iteritems():
+      if k == 'red':
+        continue
+      if type(v) is dict:
+        foo(v, "dict")
+      elif type(v) is list:
+        foo(v, "list")
+      elif v == 'red':
+        continue
+      elif type(v) is int:
+        count = count + v
+  elif tp is "list":
+    for x in f:
+      if type(x) is int:
+        count = count + x
+      elif type(x) is list:
+        foo(x, "list")
+      elif type(x) is dict:
+        foo(x, "dict")
+  return count
+f = open("12.txt")
+rd = f.read()
+import json
+st = json.loads(rd)
+foo(st, "dict")
+print count
