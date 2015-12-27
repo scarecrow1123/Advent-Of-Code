@@ -1,6 +1,7 @@
 lines = open("23.txt").read().splitlines()
 ref_table = {}
 ctr = 1
+
 def compute(instn):
   global ctr
   if instn["instn"] == "jmp":
@@ -19,6 +20,7 @@ def compute(instn):
     ctr += instn["offset"]
     return
   ctr += 1
+
 def init():  
   global ref_table
   for idx, line in enumerate(lines):
@@ -34,13 +36,13 @@ def init():
       instn_map["offset"] = int(tokens[2])
     ref_table[idx+1] = instn_map
 
-init()
-instn_numbers = ref_table.keys()
 def go():
   while True:
     compute(ref_table[ctr])
     if ctr not in instn_numbers:
       break
+init()
+instn_numbers = ref_table.keys()
 regs = {"a": 0, "b": 0}
 go()
 print regs["b"]
